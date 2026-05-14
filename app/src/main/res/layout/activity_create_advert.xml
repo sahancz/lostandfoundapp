@@ -107,6 +107,13 @@
             android:contentDescription="Image preview area"/>
 
         <Button
+            android:id="@+id/btnGetCurrentLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GET CURRENT LOCATION"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

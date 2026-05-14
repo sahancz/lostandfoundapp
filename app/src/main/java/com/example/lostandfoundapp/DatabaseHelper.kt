@@ -10,7 +10,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "LostAndFound.db"
-        private const val DATABASE_VERSION = 1
+
+        private const val DATABASE_VERSION = 2
 
         const val TABLE_NAME = "adverts"
         const val COLUMN_ID = "id"
@@ -22,6 +23,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_LOCATION = "location"
         const val COLUMN_CATEGORY = "category"
         const val COLUMN_IMAGE_URI = "image_uri"
+        // NEW COLUMNS
+        const val COLUMN_LATITUDE = "latitude"
+        const val COLUMN_LONGITUDE = "longitude"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -34,7 +38,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$COLUMN_DATE TEXT, "
                 + "$COLUMN_LOCATION TEXT, "
                 + "$COLUMN_CATEGORY TEXT, "
-                + "$COLUMN_IMAGE_URI TEXT)")
+                + "$COLUMN_IMAGE_URI TEXT, "
+                + "$COLUMN_LATITUDE REAL, "
+                + "$COLUMN_LONGITUDE REAL)")
         db.execSQL(createTableQuery)
     }
 
@@ -42,8 +48,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
-
-    // --- CRUD OPERATIONS ---
 
     fun insertAdvert(advert: Advert): Long {
         val db = this.writableDatabase
@@ -56,12 +60,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_LOCATION, advert.location)
             put(COLUMN_CATEGORY, advert.category)
             put(COLUMN_IMAGE_URI, advert.imageUri)
+            put(COLUMN_LATITUDE, advert.latitude)
+            put(COLUMN_LONGITUDE, advert.longitude)
         }
         val id = db.insert(TABLE_NAME, null, values)
         db.close()
         return id
     }
-
 
     fun getAllAdverts(categoryFilter: String? = null): List<Advert> {
         val advertList = mutableListOf<Advert>()
@@ -69,7 +74,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         val selection = if (!categoryFilter.isNullOrEmpty() && categoryFilter != "All") "$COLUMN_CATEGORY = ?" else null
         val selectionArgs = if (!categoryFilter.isNullOrEmpty() && categoryFilter != "All") arrayOf(categoryFilter) else null
-
 
         val cursor: Cursor = db.query(
             TABLE_NAME, null, selection, selectionArgs, null, null, "$COLUMN_DATE DESC"
@@ -86,7 +90,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                     date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
                     location = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LOCATION)),
                     category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
-                    imageUri = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URI))
+                    imageUri = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URI)),
+
+                    latitude = if (cursor.isNull(cursor.getColumnIndexOrThrow(COLUMN_LATITUDE))) null else cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_LATITUDE)),
+                    longitude = if (cursor.isNull(cursor.getColumnIndexOrThrow(COLUMN_LONGITUDE))) null else cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_LONGITUDE))
                 )
                 advertList.add(advert)
             } while (cursor.moveToNext())

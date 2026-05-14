@@ -4,21 +4,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp">
+    android:padding="32dp"
+    android:background="#F8FAFC">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lost &amp; Found"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Let's start the search"
+        android:textSize="16sp"
+        android:textColor="#64748B"
+        android:layout_marginBottom="48dp"/>
 
     <Button
         android:id="@+id/btnCreateAdvert"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="CREATE A NEW ADVERT"
-        android:layout_marginBottom="24dp"
-        android:padding="16dp"/>
+        android:backgroundTint="#2563EB"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnShowItems"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SHOW ALL LOST &amp; FOUND ITEMS"
-        android:padding="16dp"/>
+        android:layout_height="60dp"
+        android:text="SHOW ALL ITEMS"
+        android:backgroundTint="#475569"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnShowOnMap"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="SHOW ON MAP"
+        android:backgroundTint="#10B981"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
 
 </LinearLayout>

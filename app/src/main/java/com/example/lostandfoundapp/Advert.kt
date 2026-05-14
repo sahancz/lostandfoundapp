@@ -9,5 +9,7 @@ data class Advert(
     var date: String,
     var location: String,
     var category: String,
-    var imageUri: String?
+    var imageUri: String?,
+    var latitude: Double? = null,
+    var longitude: Double? = null
 )

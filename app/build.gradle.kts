@@ -1,3 +1,14 @@
+import java.util.Properties
+
+// --- ADDED: Read the API key securely from local.properties ---
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
+// --------------------------------------------------------------
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -19,6 +30,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
+
     }
 
     buildTypes {
@@ -36,6 +52,9 @@ android {
     }
     buildFeatures {
         compose = true
+
+        buildConfig = true
+        // ----------------------------------------------------------
     }
 }
 
@@ -60,4 +79,10 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // --- ADDED: Google Maps, Location, and Places APIs ---
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.libraries.places:places:3.3.0")
+    // -----------------------------------------------------
 }

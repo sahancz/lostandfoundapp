@@ -12,6 +12,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnCreateAdvert = findViewById<Button>(R.id.btnCreateAdvert)
         val btnShowItems = findViewById<Button>(R.id.btnShowItems)
+        // THE NEW BUTTON
+        val btnShowOnMap = findViewById<Button>(R.id.btnShowOnMap)
 
 
         btnCreateAdvert.setOnClickListener {
@@ -19,10 +21,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
         btnShowItems.setOnClickListener {
             val intent = Intent(this, ListItemsActivity::class.java)
+            startActivity(intent)
+        }
+
+        // THE NEW CLICK LISTENER
+        btnShowOnMap.setOnClickListener {
+            val intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }
     }
